@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Price Prediction | About</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function openMenu(){
+            // document.querySelector('.menu').style.display='none';
+            document.querySelector('.drawer-menu').style.display='block';
+        }
+        function closeMenu(){
+            // document.querySelector('.menu').style.display='block';
+            document.querySelector('.drawer-menu').style.display='none';
+        }
+    </script>
+</head>
+<body class="w-full h-full bg-cover" style="background: url('../static/images/gb3.jpg!d');">
+    <header class="bg-transparent">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8" aria-label="Global">
+          <div class="flex lg:flex-1">
+            <a href="/" class="-m-1.5 p-1.5">
+              <span class="sr-only">home price prediction</span>
+              <img class="h-16 w-auto" src="../static/images/logo.png" alt="home price prediction">
+            </a>
+          </div>
+          <div class="flex lg:hidden menu" onclick="openMenu()">
+            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white">
+              <span class="sr-only">Open main menu</span>
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden lg:flex lg:gap-x-4">
+            <div class="relative space-x-4"> 
+            <a href="/" class="text-xs leading-6 text-white">Home</a>
+            <a href="/about" class="text-xs leading-6 text-white">About</a>
+          </div>
+        </nav>
+        <div class="lg:hidden drawer-menu hidden" role="dialog" aria-modal="true">
+          <div class="fixed inset-0 z-10"></div>
+          <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="flex items-center justify-between">
+              <a href="/" class="-m-1.5 p-1.5">
+                <span class="sr-only">Your Company</span>
+                <img class="h-16 w-auto" src="../static/images/logo.png" alt="">
+              </a>
+              <button type="button" onclick="closeMenu()" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="mt-6 flow-root">
+              <div class="-my-6 divide-y divide-gray-500/10">
+                <div class="space-y-2 py-6">
+                  <a href="/" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-400 hover:bg-gray-900">Home</a>
+                  <a href="/about" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-400 hover:bg-gray-900">About</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>   
+      <div class="w-full mt-8 px-4 blur-md" style="background-color: rgba(0,0,0,0.85)">
+        <div class="max-w-3xl mx-auto text-gray-400">
+            <h1 class="text-3xl font-bold mb-4 text-white">About Home Price Predictor</h1>
+
+            <p class="mb-8">Welcome to Home Price Predictor, a project I've developed to help homeowners, buyers, and sellers forecast property prices with accuracy and ease. My name is Om beladiya, and I created this tool out of a passion for both real estate and data science.</p>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">What is Home Price Predictor?</h2>
+            <p class="mb-8">Home Price Predictor leverages advanced statistical models and machine learning algorithms to analyze various factors affecting property prices. By inputting key parameters such as area, amenities, and historical data, users can obtain reliable estimates of current and future property values.</p>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">Why Home Price Predictor?</h2>
+            <p class="mb-4">Having struggled with finding accurate price estimates myself, I wanted to create a tool that combines simplicity with powerful predictive capabilities. By using Home Price Predictor, you can make informed decisions whether you are buying, selling, or simply curious about the value of a property.</p>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">Technologies Used</h2>
+            <p class="mb-4"><li>Flask: Used as the web framework for building the application.</li>
+                <li>Python: Leveraged for machine learning algorithms and data analysis.</li>This website is built entirely using HTML for structure and Tailwind CSS for styling. These technologies ensure a responsive and intuitive user experience, allowing you to focus on the data and insights provided.</p>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">About the Creator</h2>
+            <p class="mb-4">I am a Student with a passion for developing Softwares to help people in any fields. Home Price Predictor is the culmination of my expertise in programming, data science and machine learning.</p>
+
+            <h2 class="text-2xl font-bold mb-2 text-white">Get in Touch</h2>
+            <p class="mb-8">Your feedback is invaluable to me as I continue to refine and improve Home Price Predictor. Feel free to reach out to me at <a class="underline" href="mailto:ombeladiya1854@gmail.com">ombeladiya1854@gmail.com</a> with any questions, suggestions, or partnership opportunities.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class=" text-gray-400 p-6 text-center mt-8">
+        <div class="container mx-auto">
+            &copy; 2024 Home Price Predictor. All rights reserved.
+        </div>
+    </footer>
+               
+    
+</body>
+</html>

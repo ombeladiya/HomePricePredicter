@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Price Prediction</title>
+    <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        function showPart2() {
+            document.querySelector(".part1").style.display = 'none';
+            document.querySelector(".part2").style.display = 'block';
+        }
+        function openMenu(){
+            // document.querySelector('.menu').style.display='none';
+            document.querySelector('.drawer-menu').style.display='block';
+        }
+        function closeMenu(){
+            // document.querySelector('.menu').style.display='block';
+            document.querySelector('.drawer-menu').style.display='none';
+        }
+        function submitForm() {
+            const form = document.getElementById("predictionForm");
+            const formData = new FormData(form);
+            const data = {};
+
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('price').innerHTML=data.predicted_price;
+                document.querySelector('.modelofprice').style.display='block';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function nextStep() {
+            const part1 = document.querySelector(".part1");
+            const requiredFields = part1.querySelectorAll("input[required], select[required]");
+            let allValid = true;
+
+            requiredFields.forEach(field => {
+                if (!field.checkValidity()) {
+                    allValid = false;
+                    field.reportValidity();
+                }
+            });
+
+            if (allValid) {
+                showPart2();
+            }
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            const part2 = document.querySelector(".part2");
+            const requiredFields = part2.querySelectorAll("input[required], select[required]");
+            let allValid = true;
+
+            for (let i = 0; i <requiredFields.length; i++) {
+                if (!requiredFields[i].checkValidity()) {
+                    requiredFields[i].reportValidity();
+                    allValid = false;
+                    break;
+                }
+            }
+            if (allValid) {
+                submitForm();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("nextButton").addEventListener("click", nextStep);
+            document.getElementById("submitButton").addEventListener("click", handleSubmit);
+        });
+
+        function closeModel(){
+          document.querySelector('.modelofprice').style.display='none';
+          document.querySelector(".part1").style.display = 'block';
+            document.querySelector(".part2").style.display = 'none';
+        }
+    </script>
+    <style>
+        .part1 { display: block; }
+        .part2 { display: none; }
+    </style>
+</head>
+<body class="w-full h-full bg-cover" style="background: url('../static/images/gb3.jpg!d');">
+  <header class="bg-transparent">
+    <nav class="mx-auto flex max-w-7xl items-center justify-between p-2 lg:px-8" aria-label="Global">
+      <div class="flex lg:flex-1">
+        <a href="/" class="-m-1.5 p-1.5">
+          <span class="sr-only">home price prediction</span>
+          <img class="h-16 w-auto" src="../static/images/logo.png" alt="home price prediction">
+        </a>
+      </div>
+      <div class="flex lg:hidden menu" onclick="openMenu()">
+        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white">
+          <span class="sr-only">Open main menu</span>
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+      <div class="hidden lg:flex lg:gap-x-4">
+        <div class="relative space-x-4"> 
+        <a href="/" class="text-xs leading-6 text-white">Home</a>
+        <a href="/about" class="text-xs leading-6 text-white">About</a>
+      </div>
+    </nav>
+    <div class="lg:hidden drawer-menu hidden" role="dialog" aria-modal="true">
+      <div class="fixed inset-0 z-10"></div>
+      <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-black px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+        <div class="flex items-center justify-between">
+          <a href="/" class="-m-1.5 p-1.5">
+            <span class="sr-only">Your Company</span>
+            <img class="h-16 w-auto" src="../static/images/logo.png" alt="">
+          </a>
+          <button type="button" onclick="closeMenu()" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+            <span class="sr-only">Close menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <div class="mt-6 flow-root">
+          <div class="-my-6 divide-y divide-gray-500/10">
+            <div class="space-y-2 py-6">
+              <a href="/" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-400 hover:bg-gray-900">Home</a>
+              <a href="/about" class="block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-400 hover:bg-gray-900">About</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>   
+    <div class="min-h-screen flex items-center justify-center -mt-9">
+        <div class="p-4 rounded-lg shadow-lg max-w-md w-full blur-md justify-center flex flex-col" style="background-color: rgba(0,0,0,0.9)">
+            <h1 class="sm:text-2xl text-xl w-full justify-center flex gap-x-4 font-bold mb-2 text-center text-white">
+                <p class="font-semibold">Home Price</p>
+                <section>
+                    <div class="first">
+                        <div class="bg-purple-900 font-semibold text-white px-3 ">Prediction</div>
+                    </div>
+                </section>
+            </h1>
+            <p class="text-sm mb-3 text-center text-gray-400">Enter details about the home to predict its price.</p>
+            <form id="predictionForm">
+                <div class="part1">
+                    <!-- Part 1 form fields -->
+                    <div class="mb-4">
+                        <label for="area" class="block text-white text-xs">Area (in sq ft) *</label>
+                        <input id="area" name="area" class="flex h-8 w-full text-white rounded-md border border-gray-500 mt-2 bg-transparent placeholder:text-black px-3 text-xs focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" type="number" placeholder="Enter Area" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="bedrooms" class="block text-white text-xs">Bedrooms *</label>
+                        <input id="bedrooms" name="bedrooms" class="flex h-8 w-full text-white rounded-md border border-gray-500 mt-2 bg-transparent placeholder:text-black px-3 text-xs focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" type="number" placeholder="Enter Number of bedrooms" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="bathrooms" class="block text-white text-xs">Bathrooms *</label>
+                        <input id="bathrooms" name="bathrooms" class="flex h-8 w-full text-gray-400 rounded-md border border-gray-500 mt-2 bg-transparent placeholder:text-black px-3 text-xs focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" type="number" placeholder="Enter Number of Bathrooms" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="stories" class="block text-white text-xs">Stories *</label>
+                        <input id="stories" name="stories" class="flex h-8 w-full text-white rounded-md border border-gray-500 mt-2 bg-transparent placeholder:text-black px-3 text-xs focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" type="number" placeholder="Enter Number of Stories" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="parking" class="block text-white text-xs">Parking *</label>
+                        <input id="parking" name="parking" class="flex h-8 w-full text-white rounded-md border border-gray-500 mt-2 bg-transparent placeholder:text-black px-3 text-xs focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" type="number" placeholder="Enter Number of Parking" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="basement" class="block text-white text-xs">Basement</label>
+                        <select id="basement" name="basement" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <button type="button" id="nextButton" class="w-full bg-purple-800 text-white py-2 px-4 rounded hover:bg-teal-700">Next</button>
+                </div>
+                <div class="part2">
+                    <!-- Part 2 form fields -->
+                    <div class="mb-4">
+                        <label for="furnishing_status" class="block text-white text-xs">Furnishing Status</label>
+                        <select id="furnishingstatus" name="furnishingstatus" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="furnished" class="text-black h-8 bg-transparent">Furnished</option>
+                            <option value="semi-furnished" class="text-black bg-transparent">Semi-furnished</option>
+                            <option value="unfurnished" class="text-black h-8 bg-transparent">Unfurnished</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="mainroad" class="block text-white text-xs">Mainroad</label>
+                        <select id="mainroad" name="mainroad" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="guestroom" class="block text-white text-xs">Guestroom</label>
+                        <select id="guestroom" name="guestroom" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="hotwaterheating" class="block text-white text-xs">Hotwater Heating</label>
+                        <select id="hotwaterheating" name="hotwaterheating" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="airconditioning" class="block text-white text-xs">Airconditioning</label>
+                        <select id="airconditioning" name="airconditioning" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="prefarea" class="block text-white text-xs">Preferred Area</label>
+                        <select id="prefarea" name="prefarea" class="mt-1 h-8 block px-2 bg-transparent border border-gray-500 text-gray-400 w-full rounded-md shadow-sm focus:ring focus:ring-black focus:ring-opacity-50 text-xs" required>
+                            <option value="yes" class="text-black h-8 bg-transparent">Yes</option>
+                            <option value="no" class="text-black bg-transparent">No</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="submitButton" class="w-full bg-purple-800 text-white py-2 px-4 rounded hover:bg-teal-700">Predict Price</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="relative z-10 modelofprice hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      
+      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+    
+      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div class="sm:flex sm:items-start">
+                <div class="mx-auto flex h-12 w-12 bg-cover px-2  flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10" style="background-image: url('https://www.svgrepo.com/show/177787/home-internet.svg');">
+                 
+                  
+                </div>
+                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                  <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Predicted Price</h3>
+                  <div class="mt-2">
+                    <p class="text-sm text-gray-500">Predicted Price of Your Home Is Rs. <span id="price" class="text-black font-semibold"></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <button type="button" class="inline-flex w-full justify-center rounded-md bg-purple-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-purple-700 sm:ml-3 sm:w-auto" onclick="closeModel()">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class=" text-gray-400 p-6 text-center mt-8">
+      <div class="container mx-auto">
+          &copy; 2024 Home Price Predictor. All rights reserved.
+      </div>
+  </footer>
+</body>
+</html>
