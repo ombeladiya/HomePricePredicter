@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 import joblib
-import json
 import pandas as pd
 
 app = Flask(__name__)
@@ -23,10 +22,8 @@ def home():
 def predict():
     data = request.get_json()
 
-    # Create DataFrame from input data
     input_df = pd.DataFrame([data])
    
-    # Encode categorical features
     input_df['mainroad'] = label_enc_mainroad.transform(input_df['mainroad'])
     input_df['guestroom'] = label_enc_guestroom.transform(input_df['guestroom'])
     input_df['basement'] = label_enc_basement.transform(input_df['basement'])
